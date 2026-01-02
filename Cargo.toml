@@ -1,0 +1,65 @@
+[package]
+name = "frost-rot"
+version = "0.1.0"
+edition = "2021"
+authors = ["FROST RoT Team"]
+description = "FROST-based Root of Trust for hardware security modules"
+license = "MIT OR Apache-2.0"
+
+[workspace]
+members = [
+    ".",
+    "crates/frost-core",
+    "crates/hardware-hal",
+    "crates/coordinator",
+    "crates/transparency-log",
+]
+
+[dependencies]
+# Cryptography
+curve25519-dalek = { version = "4.1", features = ["serde"] }
+sha2 = "0.10"
+sha3 = "0.10"
+rand_core = { version = "0.6", features = ["std"] }
+getrandom = "0.2"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+bincode = "1.3"
+
+# Async runtime (for coordinator)
+tokio = { version = "1.35", features = ["full"], optional = true }
+async-trait = "0.1"
+
+# Networking
+reqwest = { version = "0.11", features = ["json"], optional = true }
+
+# Hardware abstraction
+embedded-hal = { version = "1.0", optional = true }
+no-std-compat = { version = "0.4", features = ["alloc"], optional = true }
+
+# Logging
+log = "0.4"
+env_logger = "0.11"
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+[dev-dependencies]
+criterion = "0.5"
+proptest = "1.4"
+hex = "0.4"
+
+[features]
+default = ["std"]
+std = ["tokio", "reqwest"]
+no_std = ["embedded-hal", "no-std-compat"]
+hardware-gd32 = []  # GigaDevice GD32 support
+hardware-nations = []  # Nations Technologies SE support
+hardware-feitian = []  # Feitian HSM support
+
+[[bench]]
+name = "frost_benchmarks"
+harness = false
