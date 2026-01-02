@@ -16,11 +16,17 @@ pub mod signing;
 pub mod rotation;
 pub mod types;
 pub mod transcript;
+pub mod session_token;
+pub mod hybrid;
+pub mod derived_key;
 
 pub use types::*;
 pub use dkg::{DkgParticipant, DkgRound1, DkgRound2, DkgOutput};
 pub use signing::{SigningRound1, SigningRound2, aggregate_signatures};
 pub use rotation::ShareRotation;
+pub use session_token::{SessionToken, SessionTokenCache, TokenRequest, Capabilities};
+pub use hybrid::{HybridFROSTDevice, SigningMode, RemoteShareEndpoint};
+pub use derived_key::{DerivedDeviceKey, DerivationProof, ManufacturingProvisioner};
 
 use thiserror::Error;
 
